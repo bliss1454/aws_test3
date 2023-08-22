@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <h1>file upload</h1>
+        <form onsubmit="fileupload(event)" >
+            <input type="file" id="dynamic" multiple/><br/>
+            <input type="text" id="title" /><br />
+            <button type="submit">upload</button>
+        </form>
+        <br/>
+        <div class="result"></div>
+       
+        <script>
+            const resultBox = document.querySelector('.result');
+            async function fileupload(event) {
+                event.preventDefault();
+                console.log('file upload');
+                const title = document.querySelector('#title').value;
+                const fileInput = document.querySelector('#dynamic');
+                //dynamic의 아이디를 가지고 있는 file에 접근하고
+                const files = fileInput.files;
+                //또 그 파일의 파일에 완전 접근.
+
+                const formdata = new FormData()
+                formdata.append('title', title); //append에 들어가는 이름은 js파일의 upload에 들어가있는 이름과 같아야한다.
+                
+                for (let i =0; i <files.length; i++) {
+                    formdata.append('dynamic',files[i]);
+                }
+
+                try {
+                    const res = await axios({
+                    method: 'POST',
+                    url: '/dynamic',
+                    data: formdata,
+                    headers: {
+                        'Content-Type' : 'multipart/form-data',
+                    },
+                }); resultBox.innerHTML = '';
+                    for (let i = 0; i < res.data.length; i++) {
+                    resultBox.innerHTML += `<img src="${res.data[i].path}" style="width: 500px">`;
+                    }
+                    // const img = document.createElement('img') --> 이 부분 다시 이해하기
+                    // img.src= res.data[i].path
+                    // resultBox.appendChild(img);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        </script>
+</body>
+</html>
