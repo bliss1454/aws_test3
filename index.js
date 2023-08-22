@@ -7,7 +7,7 @@ const app = express();
 const PORT = 8000;
 
 //aws설정
-aws.congig.update({
+aws.congfig.update({
     accessKeyId: 'AKIARLHBYEW2ULUTQYEJ',
     secretAcessKey: "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",
     region: 'ap-northeast-2',
