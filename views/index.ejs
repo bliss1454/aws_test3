@@ -20,32 +20,28 @@
             const resultBox = document.querySelector('.result');
             async function fileupload(event) {
                 event.preventDefault();
-                console.log('file upload');
-                const title = document.querySelector('#title').value;
-                const fileInput = document.querySelector('#dynamic');
-                //dynamic의 아이디를 가지고 있는 file에 접근하고
-                const files = fileInput.files;
-                //또 그 파일의 파일에 완전 접근.
+                const files = document.querySelector("#dynamic").files;
+                console.log(files)
+                const formData = new FormData()
 
-                const formdata = new FormData()
-                formdata.append('title', title); //append에 들어가는 이름은 js파일의 upload에 들어가있는 이름과 같아야한다.
-                
                 for (let i =0; i <files.length; i++) {
-                    formdata.append('dynamic',files[i]);
+                    formData.append("files",files[i]);
                 }
 
                 try {
                     const res = await axios({
                     method: 'POST',
-                    url: '/dynamic',
-                    data: formdata,
+                    url: '/upload',
+                    data: formData,
                     headers: {
                         'Content-Type' : 'multipart/form-data',
                     },
-                }); resultBox.innerHTML = '';
-                    for (let i = 0; i < res.data.length; i++) {
-                    resultBox.innerHTML += `<img src="${res.data[i].path}" style="width: 500px">`;
-                    }
+                }); res.data.forEach((elem) => {
+                    const img = document.createElement("img");
+                    img.src = elem.location;
+                    img.style.width = "500px";
+                    resultBox.appendChild(img);
+                })
                 } catch (error) {
                     console.log(error);
                 }
