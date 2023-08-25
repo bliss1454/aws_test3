@@ -9,7 +9,7 @@ app.set('view engine', 'ejs');
 //aws설정
 aws.config.update({
     accessKeyId: 'AKIARLHBYEW27NW235QL',
-    secretAcessKey: "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",
+    secretAccessKey: "mmCblAKwIoMvy00JZzifpggog67V5NEScoKb1MgM",
     region: 'ap-northeast-2',
 });
 //aws s3 인스턴스 생성
